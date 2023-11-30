@@ -1,6 +1,6 @@
 ## for config
 from classifier.gpu import config_gpu
-from backend.classifier.configurations import read_config
+from classifier.configurations import read_env_vars
 
 ## for data
 import pandas as pd
@@ -12,7 +12,7 @@ from classifier.taxonomy_aggregator import aggregate_nodes, remove_dummy_nodes
 ## for processing
 import re
 import nltk
-import treeify
+import classifier.treeify
 
 ## for plotting
 import matplotlib.pyplot as plt
@@ -34,22 +34,24 @@ import logging
 
 class ZSC:
     def __init__(self, ex):
-        logger = logging.getLogger()
+        self.logger = logging.getLogger("ZSC")
         # setting logger to a warning message
-        logger.info("********ZSC logger is enabled***********")
+        self.logger.info("********ZSC logger is enabled***********")
 
         config_gpu()
         nltk.download("stopwords")
         nltk.download("wordnet")
         self.lst_stopwords = nltk.corpus.stopwords.words("english")
         self.ex = ex
-        self.config = read_config()
+        self.config = read_env_vars()
         self.taxonomy = self.prepare_taxonomy(ex)
-        logger.info("********ZSC is initalized***********")
+        self.logger.info(self.config)
+        self.logger.info("********ZSC is initalized***********")
 
     def read_taxonomy(self, ex: dict):
         ## read the taxonomy from csv
         cs = ex["cs"]
+        self.logger.info(self.config[cs])
         df_taxonomy = pd.read_csv(self.config[cs], delimiter=";", keep_default_na=False)
         df_taxonomy_filtered = df_taxonomy.loc[
             df_taxonomy["dimension"] == ex["dimension"]

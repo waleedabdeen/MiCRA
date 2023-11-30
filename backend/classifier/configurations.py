@@ -1,4 +1,5 @@
-import json
+import os
+from dotenv import load_dotenv
 
 classifier_config = {
     "k": 5,
@@ -14,7 +15,21 @@ classifier_config = {
 }
 
 
-def read_config():
-    file_pah = "config.json"
-    with open(file_pah, "r") as config_file:
-        return json.load(config_file)
+def read_env_vars():
+    load_dotenv()
+    OUTPUT = os.getenv("OUTPUT")
+    LLAMA_MODELS = os.getenv("LLAMA_MODELS")
+    COCLASS = os.getenv("COCLASS")
+    SB11 = os.getenv("SB11")
+    DATA = os.getenv("DATA")
+    SERVER_ENV = os.getenv("SERVER_ENV")
+
+    env_vars = {
+        "output": OUTPUT,
+        "llama_models": LLAMA_MODELS,
+        "CoClass": COCLASS,
+        "SB11": SB11,
+        "data": DATA,
+        "server_env": SERVER_ENV,
+    }
+    return env_vars

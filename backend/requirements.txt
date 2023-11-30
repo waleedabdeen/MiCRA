@@ -31,3 +31,5 @@ langchain
 treelib
 xlrd
 openpyxl
+
+dotenv

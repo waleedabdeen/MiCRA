@@ -1,19 +1,21 @@
 from flask import request
 from flask_restful import Resource
 from flask_cors import cross_origin
-from backend.classifier.zsc import ZSC
-from backend.classifier.configurations import classifier_config, read_config
+from classifier.zsc import ZSC
+from classifier.configurations import classifier_config, read_env_vars
 import logging
 from classifier.dataparser import parse
 
+# env
+conf = read_env_vars()
+
+# logging
+loggingLevel = logging.INFO if conf["server_env"] == "production" else logging.INFO
+logging.basicConfig(level=loggingLevel)
 logger = logging.getLogger("API")
-logging.basicConfig(level=logging.DEBUG)
 
-logger.info("**********************initializing**********************")
+# classifier
 zsc = ZSC(classifier_config)
-logger.info("******************finished initializing*****************")
-
-conf = read_config()
 
 
 class Classification(Resource):
