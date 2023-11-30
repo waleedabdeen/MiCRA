@@ -1,0 +1,7 @@
+{
+    "output": "../output",
+    "llama_models": "/mnt/4tb_hdd/users/wxa/models/",
+    "CoClass": "/home/waleed/dev/lm4rc/data/coclass_en_sv.csv",
+    "SB11": "/home/waleed/dev/lm4rc/data/sb11_en_sv.csv",
+    "data": "/home/waleed/dev/lm4rc/data/reqs_with_annotation_for_hc_20231020.csv"
+}

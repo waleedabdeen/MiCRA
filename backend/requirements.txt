@@ -1,0 +1,33 @@
+#API
+flask
+flask_restful
+flask_cors
+
+## for data
+#json
+pandas
+numpy
+#sklearn old package
+scikit-learn
+
+## for processing
+#re
+nltk
+stanza
+
+## for plotting
+matplotlib
+seaborn
+
+#Models
+transformers
+#tensorflow installed wth conda
+sentence_transformers
+tensorflow
+llama-cpp-python
+langchain
+
+# for treeify
+treelib
+xlrd
+openpyxl
