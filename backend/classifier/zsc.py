@@ -12,21 +12,17 @@ from classifier.taxonomy_aggregator import aggregate_nodes, remove_dummy_nodes
 ## for processing
 import re
 import nltk
-import classifier.treeify
 
 ## for plotting
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 ## models
-from transformers import AutoTokenizer, AutoModel
 import tensorflow as tf
-from sentence_transformers import SentenceTransformer, util
-import torch
+from sentence_transformers import SentenceTransformer
 import torch.nn.functional as F
-
-import math
 import time
+from embedding.embedding import try_read_taxonomy_embedding, save_embedding
 
 ##logging
 import logging
@@ -34,14 +30,11 @@ import logging
 
 class ZSC:
     def __init__(self, ex):
-        self.logger = logging.getLogger("ZSC")
-        # setting logger to a warning message
-        self.logger.info("********ZSC logger is enabled***********")
-
         config_gpu()
         nltk.download("stopwords")
         nltk.download("wordnet")
         self.lst_stopwords = nltk.corpus.stopwords.words("english")
+        self.logger = logging.getLogger("ZSC")
         self.ex = ex
         self.config = read_env_vars()
         self.taxonomy = self.prepare_taxonomy(ex)
@@ -128,9 +121,7 @@ class ZSC:
         X = nlp.encode(txt)
         return X
 
-    def create_embedding(
-        self, df_test_data, df_taxonomy, hierarchy, embedding, model, lower_case
-    ):
+    def create_embedding(self, df_test_data, df_taxonomy, hierarchy, embedding, model):
         class_key = "text"
         if hierarchy in ["bottomup", "topdown"]:
             class_key = hierarchy
@@ -145,18 +136,24 @@ class ZSC:
         return None
 
     def sentence_embedding(self, model, df_test_data, df_taxonomy_aggregated_text):
+        # load model
         nlp = self.load_sentence_model(model)
+
+        # input data embedding
         embeddings = [
             self.utils_sentence_bert_embedding(txt, nlp) for txt in df_test_data
         ]
-
-        ## create the feature matrix (n requirement x 384)
         X = np.array(embeddings)
 
-        Y = {
-            row.iloc[0]: self.utils_sentence_bert_embedding(row.iloc[1], nlp)
-            for index, row in df_taxonomy_aggregated_text.iterrows()
-        }
+        # taxonomy embedding
+        Y = try_read_taxonomy_embedding(self.ex["cs"], self.ex["dimension"])
+        if Y == None:
+            Y = {
+                row.iloc[0]: self.utils_sentence_bert_embedding(row.iloc[1], nlp)
+                for index, row in df_taxonomy_aggregated_text.iterrows()
+            }
+
+            save_embedding(Y, self.ex["cs"], self.ex["dimension"])
 
         return X, Y
 
@@ -169,10 +166,6 @@ class ZSC:
             ]
         ).T
         return similarities
-
-        sentence_embedding(
-            model, df_test_data["text"], df_taxonomy.loc[:, ["identifier", class_key]]
-        )
 
     def get_top_k_label_idx(self, simiArray, k, cutoff):
         # simiArrayAtCutoff = np.array(list(filter(lambda score: score >= cutoff, simiArray)))
@@ -219,7 +212,6 @@ class ZSC:
 
     def global_classifier(self, df_test_data, df_taxonomy, ex):
         hierarchy = ex["hierarchy"]
-        lower_case = ex["lower_case"]
         model_name = ex["model"]
         embedding = ex["embedding"]
         k = ex["k"]
@@ -229,8 +221,13 @@ class ZSC:
         df_test_data["text_clean"] = df_test_data["all_text_clean"]
         # df_test_data['text'] = df_test_data['req_text']
         # df_test_data['text_clean'] = df_test_data['req_text_clean']
+
         X, Y = self.create_embedding(
-            df_test_data, df_taxonomy, hierarchy, embedding, model_name, lower_case
+            df_test_data,
+            df_taxonomy,
+            hierarchy,
+            embedding,
+            model_name,
         )
 
         similarities = self.cosine_similarity(X, Y)

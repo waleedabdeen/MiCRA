@@ -1,4 +1,4 @@
-from backend.classifier.zsc import ZSC
+from classifier.zsc import ZSC
 import pandas as pd
 import os
 

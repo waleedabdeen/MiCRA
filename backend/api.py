@@ -37,6 +37,7 @@ class Requirements(Resource):
         labelsStr = request.args.get("labels")
         cs = request.args.get("cs")
         dimension = request.args.get("dimension")
+        returntype = request.args.get("returntype")
         if labelsStr != None:
             logger.debug("query params")
             logger.debug("labels:" + labelsStr)
@@ -53,4 +54,8 @@ class Requirements(Resource):
 
         reqs = parse(conf["data"], condition)
         reqsDics = [r.to_dictionary("en") for r in reqs]
+
+        if returntype == "count":
+            return {"count": len(reqsDics)}
+
         return {"labels": labelsStr, "requirements": reqsDics}

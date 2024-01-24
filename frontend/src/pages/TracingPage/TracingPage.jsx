@@ -23,7 +23,7 @@ const TracingPage = () => {
     const onClassificationComplete = (req, labels) => {
         setSource(req)
         setLabels(labels);
-        selectedLabels([]);
+        setSelectedLabels([]);
         setCurrent(1);
     };
 
@@ -31,6 +31,7 @@ const TracingPage = () => {
         setSelectedLabels(selectedLabels);
         setCurrent(2);
     };
+
 
     return (
         <Steps
@@ -48,10 +49,12 @@ const TracingPage = () => {
                 },
                 {
                     title: 'Step 3: Trace',
-                    description: (<Tracer labels={selectedLabels} source={source} />),
+                    description: (<Tracer labels={selectedLabels} source={source} />)
                 },
             ]}
         />
+
+
     );
 }
 

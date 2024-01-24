@@ -12,6 +12,7 @@ conf = read_env_vars()
 loggingLevel = logging.INFO if conf["server_env"] == "production" else logging.INFO
 logging.basicConfig(level=loggingLevel)
 
+# app
 app = Flask(__name__)
 CORS(
     app,
@@ -21,6 +22,7 @@ CORS(
 )
 logging.getLogger("flask_cors").level = logging.DEBUG
 
+# api
 api = Api(app)
 api.add_resource(Classification, "/classification")
 api.add_resource(Requirements, "/requirements")

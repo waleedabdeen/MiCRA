@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, List, Divider, Avatar, Steps, Alert, Space } from "antd";
+import { Button, Form, Input, List, Divider, Alert, Space } from "antd";
 import { read } from "../../data/restApi";
 
 

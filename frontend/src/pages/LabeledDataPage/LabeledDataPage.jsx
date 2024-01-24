@@ -1,5 +1,5 @@
-import { Button, Form, Select, Space, Table } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Form, Select, Space, Table } from "antd";
+import { useCallback, useEffect, useState } from "react";
 import { read } from "../../data/restApi";
 import { useForm } from "antd/es/form/Form";
 
@@ -109,7 +109,7 @@ const LabeledDataPage = () => {
 
     useEffect(() => {
         fetchRequirements();
-    }, [data]);
+    }, [data, fetchRequirements]);
 
     return <Space direction="vertical">
         <h2>Labeld Data</h2>
