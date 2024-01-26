@@ -32,4 +32,4 @@ treelib
 xlrd
 openpyxl
 
-dotenv
+python-dotenv
