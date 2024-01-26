@@ -22,7 +22,7 @@ TODO: Explain how to run the project (client, server etc.).
 
 ## License
 
-TODO: Add license and copyright notice.
+Copyright © 2024 Waleed Abdeen
 
-## Contributors
-Waleed Abdeen
+This work (source code) is licensed under  [GPLv3](./LICENSE).
+
