@@ -4,25 +4,22 @@ A tool to demonstrate the multi-label classification of requirements artifacts, 
 
 ## How to Use
 
-### Prerequisites
+### Backend
 
-TODO: Explain which steps and dependencies are required to run and build the project (e.g., pip install -r requirements.txt)
+Go to the `./backend/` folder.
 
-### Build
+- *Prerequisites*: `pip install -r requirements.txt` to install all dependencies
+- *Run*: `python server.py` to start the server
 
-TODO: Explain how the whole project can be build.
+### Frontend
 
-### Test
+Go to the `./frontend/` folder.
 
-TODO: Explain how unit- or integreation tests can be executed.
-
-### Run
-
-TODO: Explain how to run the project (client, server etc.).
+- *Prerequisites*: `npm install` to install all dependencies
+- *Run*: `npm start` to start the frontend
 
 ## License
 
 Copyright © 2024 Waleed Abdeen
 
 This work (source code) is licensed under  [GPLv3](./LICENSE).
-
