@@ -1,9 +1,11 @@
+version: "3.7"
+
 services:
   frontend:
     container_name: micra_frontend
     build:
       context: frontend/
+      args:
+        - REACT_APP_SERVER_URL=https://micrabackend.diptsrv003.bth.se
     ports:
-      - 8081:80
-    environment:
-      - REACT_APP_SERVER_URL="http://localhost:5000"
+      - 3004:80
