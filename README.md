@@ -16,7 +16,6 @@ Go to the `./backend/` folder.
 Go to the `./frontend/` folder.
 
 - *Prerequisites*: `npm install` to install all dependencies
-- *Build*: `npm run build` to create a production build
 - *Run*: `npm start` to start the frontend
 
 ## License
