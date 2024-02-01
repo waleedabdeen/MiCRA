@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./requirements.txt .
 
+ENV PIP_ROOT_USER_ACTION=ignore
+
 RUN pip3 install -r requirements.txt
 
 COPY *.py .
