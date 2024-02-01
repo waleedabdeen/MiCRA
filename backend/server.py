@@ -16,7 +16,7 @@ logging.basicConfig(level=loggingLevel)
 app = Flask(__name__)
 CORS(
     app,
-    origins="http://localhost:3000",
+    origins="*",
     supports_credentials=True,
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 )
