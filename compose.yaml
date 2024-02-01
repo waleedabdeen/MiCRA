@@ -1,0 +1,9 @@
+services:
+  frontend:
+    container_name: micra_frontend
+    build:
+      context: frontend/
+    ports:
+      - 8000:80
+    environment:
+      - REACT_APP_SERVER_URL="http://localhost:5000"
