@@ -1,6 +1,19 @@
 version: "3.7"
 
 services:
+  backend:
+    container_name: micra_backend
+    build:
+      context: backend/
+    ports:
+      - 5000:5000
+    environment:
+      - OUTPUT=../output
+      - LLAMA_MODELS=
+      - COCLASS=data/coclass_en_sv.csv
+      - SB11=data/sb11_en_sv.csv
+      - DATA=data/requirements_sample.csv
+      - SERVER_ENV=development
   frontend:
     container_name: micra_frontend
     build:
