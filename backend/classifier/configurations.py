@@ -26,7 +26,6 @@ def read_env_vars():
 
     env_vars = {
         "output": OUTPUT,
-        "llama_models": LLAMA_MODELS,
         "CoClass": COCLASS,
         "SB11": SB11,
         "data": DATA,
