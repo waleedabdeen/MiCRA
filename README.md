@@ -4,21 +4,35 @@
 
 A tool to demonstrate the multi-label classification of requirements artifacts, and its application.
 
-## How to Use
+
+
+
+## How to Develop
+
+The project consist of two main parts, a backend and a frontend. In order to start development you need to bring up the backend and the frontend.
 
 ### Backend
 
-Go to the `./backend/` folder.
+Ensure that you have python `v 3.9` installed on your machine.
 
-- *Prerequisites*: `pip install -r requirements.txt` to install all dependencies
-- *Run*: `python server.py` to start the server
+1. Navigate to the `./backend/` folder using the terminal.
+2. Install backend dependencies by running the command `pip install -r requirements.txt`. You should run this command evertime you pull the code from the repository and whenever you change the requirements file.
+3. Start the server `python server.py`.
+
 
 ### Frontend
 
-Go to the `./frontend/` folder.
+Ensure that you have at least npm `v 10.3.0`
 
-- *Prerequisites*: `npm install` to install all dependencies
-- *Run*: `npm start` to start the frontend
+1. Navigate to the `./frontend/` folder using the terminal.
+2. Install frontend dependencies by running the command `npm install`.
+3. Start the frontend development server by running `npm start`.
+
+
+## Docker
+
+The Docker images provided with this repository are not tested, but rather a WIP. Please refer to [how to develop](#how-to-develop) until the docker images are finalized.
+
 
 ## License
 
