@@ -1,35 +1,30 @@
-#API
-flask
-flask_restful
-flask_cors
-
-## for data
-#json
+#data
 pandas
 numpy
-#sklearn old package
 scikit-learn
 
-## for processing
-#re
+#processing
+##re
 nltk
 stanza
-
-## for plotting
+##plotting
 matplotlib
 seaborn
 
-#Models
+#models
 transformers
-#tensorflow installed wth conda
 sentence_transformers
 tensorflow
-llama-cpp-python
-langchain
 
-# for treeify
+#treeify
 treelib
 xlrd
 openpyxl
 
+#api
+flask
+flask_restful
+flask_cors
+
+#development
 python-dotenv
