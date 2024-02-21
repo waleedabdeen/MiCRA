@@ -33,6 +33,11 @@ Ensure that you have at least npm `v 10.3.0`.
 
 The Docker images provided with this repository are not tested, but rather a WIP. Please refer to [how to develop](#how-to-develop) until the docker images are finalized.
 
+The `docker-compose.yaml` contains the build argument `REACT_APP_SERVER_URL` to tell the compiled frontend where the backend's API can be reached.
+You have to set this arugment before you build and run the Docker container.
+
+Use `docker compose up` to build and run the containerized version of the backend and frontend.
+
 
 ## License
 
