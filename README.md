@@ -11,7 +11,7 @@ The project consist of two main parts, a backend and a frontend. In order to sta
 
 ### Backend
 
-Ensure that you have python `v 3.9` installed on your machine. 
+Ensure that you have python `v 3.9` installed on your machine.
 
 1. Navigate to the `./backend/` folder using the terminal.
 2. Create an copy of the environment file by running `cp .env.example .env`.
@@ -38,6 +38,8 @@ You have to set this arugment before you build and run the Docker container.
 
 Use `docker compose up` to build and run the containerized version of the backend and frontend.
 
+To run the container in a production environment you can override the Docker compose settings in `docker-compose.prod.yaml`.
+Use `docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up` to run the Docker setup with production overrides.
 
 ## Contribution Guidelines
 
