@@ -43,9 +43,9 @@ Use `docker compose up` to build and run the containerized version of the backen
 
 Please follow these guidelines when submitting a pull request.
 
-1. A pull request should have a title that describes its purpose. If there is a feature or bug Id, then please add it here.
+1. A pull request should have a title that describes its purpose. If there is a feature or a bug Id, then please add it here.
 2. Summarize the list of made changes (preferabley using a list)
-3. Test your code and provide any test cases used to verify the code.
+3. Test your code and provide any test cases that you used to verify the code.
 4. Add a screenshot showing the test results.
 5. Be patient
 
