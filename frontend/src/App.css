@@ -22,3 +22,12 @@
   border-radius: 6px;
   margin: 0 12px;
 }
+
+
+.topMenu {
+  width: 400px;
+}
+
+.red {
+  background-color: red;
+}

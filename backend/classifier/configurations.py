@@ -6,8 +6,8 @@ classifier_config = {
     "model": "all-MiniLM-L12-v2",
     "lower_case": True,
     "embedding": "sentence",
-    "cs": "CoClass",
-    "dimension": "Tillgångssystem",
+    "cs": "Tele",
+    "dimension": "Chatgpt",
     "lang": "en",
     "hierarchy": "bottomup",
     #'doubletap': False,
@@ -21,6 +21,7 @@ def read_env_vars():
     LLAMA_MODELS = os.getenv("LLAMA_MODELS")
     COCLASS = os.getenv("COCLASS")
     SB11 = os.getenv("SB11")
+    TELE = os.getenv("TELE")
     DATA = os.getenv("DATA")
     SERVER_ENV = os.getenv("SERVER_ENV")
 
@@ -29,6 +30,7 @@ def read_env_vars():
         "llama_models": LLAMA_MODELS,
         "CoClass": COCLASS,
         "SB11": SB11,
+        "Tele": TELE,
         "data": DATA,
         "server_env": SERVER_ENV,
     }

@@ -13,6 +13,16 @@ const read = (url, params, token) => {
     });
 };
 
+const write = (url, params, bodyparams, token) => {
+    return new Promise((resolve, reject) => {
 
+        apiCall(url, params, bodyparams, 'POST', token)
+            .then(results => {
+                resolve(results);
+            }).catch((error) => {
+                reject(error);
+            });
+    });
+};
 
-export { read };
+export { read, write };

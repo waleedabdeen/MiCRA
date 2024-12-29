@@ -33,6 +33,8 @@ def aggregate_nodes(df_taxonomy: object, cs: str, table: str, how: str, content_
         cs_tree = treeify.coclass_from_df(df_taxonomy,'coclass', content_index)
     elif cs == 'SB11':
         cs_tree = treeify.sb11_from_df(df_taxonomy,'sb11', content_index)
+    elif cs == 'Tele': 
+        cs_tree = treeify.coclass_from_df(df_taxonomy,'tele', content_index)
     else:
         raise Exception("invalid cs")
     

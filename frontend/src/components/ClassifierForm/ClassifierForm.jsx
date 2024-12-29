@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Button, Form, Input, List, Divider, Alert, Space } from "antd";
-import { read } from "../../data/restApi";
-
+import { Button, Form, Input, Select, Space, Checkbox, Alert } from "antd";
+import { read, write } from "../../data/restApi";
 
 const ClassifierForm = ({ onComplete, onTextChange }) => {
     const { TextArea } = Input;
-    const [form] = Form.useForm();
-
+    const [artifactForm] = Form.useForm();
+    const [labelsForm] = Form.useForm();
     const [labels, setLabels] = useState();
     const [loading, setLoading] = useState(false);
+    const [saved, setSaved] = useState(false);
 
     const onFinish = (e) => {
         setLabels();
@@ -16,8 +16,9 @@ const ClassifierForm = ({ onComplete, onTextChange }) => {
         read('classification', { 'text': e.requirement })
             .then(result => {
                 setLoading(false);
-                setLabels(result.labels)
-                onComplete(e.requirement, result.labels);
+                setLabels(result.labels.map(e => ({
+                    value: e.label, label: `${e.label}. ${e.desc} [${e.score?.toFixed(2)}]`
+                })))
             })
             .catch(error => {
                 console.error(error);
@@ -26,28 +27,67 @@ const ClassifierForm = ({ onComplete, onTextChange }) => {
     };
 
     const onFinishFailed = ({ values, errorFields }) => {
-        console.log(values);
-        console.log(errorFields);
+        console.error(values);
+        console.error(errorFields);
     };
 
+    const onSave = (e) => {
+        const bodyParams = {
+            text: artifactForm.getFieldValue('text'),
+            type: artifactForm.getFieldValue('type'),
+            labels: e.truelabels
+        }
+
+        console.log(bodyParams)
+
+        setLoading(true);
+        write('artifacts', undefined, bodyParams)
+            .then(result => {
+                setLoading(false);
+                setSaved(true)
+                console.log(result);
+            })
+            .catch(error => {
+                console.error(error);
+                setLoading(false);
+                setSaved(false)
+            });
+
+        console.log(e.truelabels)
+    };
+
+    const onSaveFailed = ({ values, errorFields }) => {
+        console.error(values);
+        console.error(errorFields);
+    };
+
+
+
     return <Space direction="vertical" style={{ width: '100%' }}>
-        <Alert
-            message="Enter requirement text"
-            description="Enter requirement text in the input box to classify (max 1000 character)."
-            type="info"
-            showIcon
-        />
+
+
+        <h3>Artifact Data</h3>
         <Form
             size="large"
-            form={form}
+            form={artifactForm}
             layout={"vertical"}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            onValuesChange={onTextChange}
             style={{ maxWidth: 1000 }}
         >
-            <Form.Item name="requirement" label="Requirement">
-                <TextArea placeholder="enter a requirement to classify" maxLength={1000} rows={4} />
+            <Form.Item name="type" label="Type">
+                <Select
+                    // initialvalue="BUC"
+                    style={{ width: 120 }}
+                    options={[
+                        { value: 'BUC', label: 'BUC' },
+                        { value: 'GPR', label: 'GPR' },
+                        { value: 'TC', label: 'TC' }
+                    ]}
+                />
+            </Form.Item>
+            <Form.Item name="text" label="Text">
+                <TextArea placeholder="enter a text to classify" maxLength={1000} rows={4} />
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit" loading={loading}>
@@ -55,27 +95,38 @@ const ClassifierForm = ({ onComplete, onTextChange }) => {
                 </Button>
             </Form.Item>
         </Form>
-
         <>
             {labels &&
                 <>
-                    <Divider orientation="left">Labels</Divider>
-                    <List
-                        className="white-bg"
-                        itemLayout="horizontal"
-                        bordered
-                        dataSource={labels}
-                        renderItem={(item, index) => (
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={index + 1}
-                                    title={item.desc}
-                                    description={item.label + ' - ' + item.score?.toFixed(2)}
-                                />
-                            </List.Item>
-                        )}
-                    />
+                    <h3>Suggested Labels</h3>
+                    <Form
+                        size="large"
+                        form={labelsForm}
+                        onFinish={onSave}
+                        onFinishFailed={onSaveFailed}
+                    >
+                        <Form.Item name={'truelabels'}>
+                            <Checkbox.Group
+                                options={labels}
+                                onChange={(e) => console.log(e)}
+                            />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" loading={loading}>
+                                Save
+                            </Button>
+                        </Form.Item>
+                    </Form>
                 </>
+            }
+            {
+                saved &&
+
+                <Alert
+                    message="Link Saved"
+                    type="info"
+                    showIcon
+                />
             }
         </>
     </Space>

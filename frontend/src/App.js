@@ -6,17 +6,23 @@ import menuItem from './menuItems';
 import TracingPage from './pages/TracingPage/TracingPage';
 import LabeledDataPage from './pages/LabeledDataPage/LabeledDataPage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import CreateLinkPage from './pages/CreateLinkPage/CreateLinkPage';
 
 function App() {
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <TracingPage />
+            element: <CreateLinkPage />
         },
         {
             path: 'labeled-data',
             element: <LabeledDataPage />
+        },
+        {
+            path: 'trace',
+            element: <TracingPage />
         }
+
     ]);
 
     const navigate = (destination) => {
@@ -35,9 +41,10 @@ function App() {
                 <Header className='header'>
                     <Image height={60} src='bth_white_logo_small.png' />
                     <h2 className="website-title">
-                        Taxonomic Trace Links: an ML Supported Traceability
+                        Taxonomic Trace Links
                     </h2>
                     <Menu
+                        className="topMenu"
                         theme="dark"
                         mode="horizontal"
                         defaultSelectedKeys={['2']}

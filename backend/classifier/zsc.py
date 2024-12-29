@@ -62,6 +62,10 @@ class ZSC:
         elif cs == "SB11":
             text_col_keys = ["name_eng", "desc_eng"]
             class_desc_index = 6
+        elif cs == "Tele":
+            text_col_keys = ["name_eng", "desc_eng", "synonyms_eng"]
+            class_desc_index = 5
+
 
         taxonomy["text"] = taxonomy[text_col_keys].fillna("").agg(" ".join, axis=1)
         taxonomy["text_clean"] = taxonomy["text"].apply(

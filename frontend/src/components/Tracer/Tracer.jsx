@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Alert, Checkbox, Space, Table } from "antd";
+import { Alert, Checkbox, Select, Space, Table } from "antd";
 import { isArrayEmpty } from "../../utils/objectUtils";
 import { read } from "../../data/restApi";
 import Chart from "react-google-charts";
@@ -8,8 +8,9 @@ const initialChartData = [["From", "To", "Weight"]];
 
 const Tracer = ({ labels, source }) => {
     const [requirements, setRequirements] = useState();
+    const [targetType, setTargetType] = useState();
     const [chartData, setChartData] = useState(initialChartData);
-    const [filter, setFilter] = useState([]);
+    const [selectedLabels, setSelectedLabels] = useState(labels);
 
     // const [filter, setFilter] = useState();
     const columns = [
@@ -17,6 +18,13 @@ const Tracer = ({ labels, source }) => {
             title: 'Id',
             dataIndex: 'id',
             key: 'id',
+            width: '10%'
+        },
+        {
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
+            width: '10%'
         },
         {
             title: 'Text',
@@ -27,69 +35,70 @@ const Tracer = ({ labels, source }) => {
             title: 'Labels',
             dataIndex: 'labels',
             key: 'labels',
+            width: '20%',
+            render: (values) => (
+                values.map(e => <div>[{e.label} - {e.label_name}]</div>)
+            )
         },
     ];
 
 
-    const fetchRequirements = (filter) => {
-        let params = { labels: filter };
+    const fetchRequirements = (labelsIds, targetType) => {
+        let params = { type: targetType, labels: labelsIds };
 
-        read('requirements', params)
+        read('artifacts', params)
             .then(result => {
-                let reqs = result.requirements?.map(req => ({
-                    id: req.req_id,
-                    text: req.req_text,
-                    labels: req.label_str,
-                    labels_array: req.label
+                let reqs = result.map(req => ({
+                    key: req.id,
+                    id: req.id,
+                    text: req.text,
+                    type: req.type,
+                    label_str: req.label_str,
+                    labels: req.labels
                 }));
 
+                console.log(result)
                 setRequirements(reqs);
             })
             .catch(error => console.error(error));
     };
 
-    const handleFilterChanaged = (filter => {
-        setFilter(filter);
-        fetchRequirements(filter);
-    });
-
-    const updateChartData = useCallback(() => {
-        if (!isArrayEmpty(requirements) && !isArrayEmpty(labels)) {
-            let newData = [...initialChartData];
-            for (let j = 0; j < filter.length; j++) {
-                let label = filter[j];
-                let datapoint = ["Input", label, 1];
-                newData.push(datapoint);
-            }
-            for (let i = 0; i < requirements.length; i++) {
-                let req = requirements[i];
-                req.labels_array.forEach(l => {
-                    if (filter.includes(l)) {
-                        // let desc = labels.filter(element => element.label == l)?.desc
-                        let datapoint = [l, req.id, 1];
-                        newData.push(datapoint);
-                    }
-                });
-            }
-            setChartData(newData);
-        } else {
-            setChartData(initialChartData);
-        }
-    }, [requirements, filter, labels]);
+    // const updateChartData = useCallback(() => {
+    //     if (!isArrayEmpty(requirements) && !isArrayEmpty(labels)) {
+    //         let newData = [...initialChartData];
+    //         for (let j = 0; j < labels.length; j++) {
+    //             let label = labels[j];
+    //             let datapoint = ["Input", label, 1];
+    //             newData.push(datapoint);
+    //         }
+    //         for (let i = 0; i < requirements.length; i++) {
+    //             let req = requirements[i];
+    //             req.labels_array.forEach(l => {
+    //                 if (labels.includes(l)) {
+    //                     // let desc = labels.filter(element => element.label == l)?.desc
+    //                     let datapoint = [l, req.id, 1];
+    //                     newData.push(datapoint);
+    //                 }
+    //             });
+    //         }
+    //         setChartData(newData);
+    //     } else {
+    //         setChartData(initialChartData);
+    //     }
+    // }, [requirements, labels, labels]);
 
     useEffect(() => {
-        if (!isArrayEmpty(labels)) {
-            let labelsIds = labels.map(e => e.label);
-            fetchRequirements(labelsIds);
+        if (!isArrayEmpty(selectedLabels)) {
+            fetchRequirements(selectedLabels, targetType);
         } else {
             setRequirements([]);
         }
 
-    }, [labels]);
+    }, [selectedLabels, targetType]);
 
-    useEffect(() => {
-        updateChartData();
-    }, [requirements, filter, updateChartData]);
+    // useEffect(() => {
+    //     updateChartData();
+    // }, [requirements, labels, updateChartData]);
 
     const options = {
         height: 500,
@@ -105,20 +114,31 @@ const Tracer = ({ labels, source }) => {
 
     return <>
         {!isArrayEmpty(labels) && <Space direction="vertical" style={{ width: '100%' }}>
-            <Alert
-                message="Trace to other requirements"
-                description={`Source requirement: ${source}`}
-                type="info"
-                showIcon
+            <Select
+                value={targetType}
+                onChange={(t) => {
+                    setTargetType(t)
+                }}
+                style={{ width: 120 }}
+                options={[
+                    { value: 'BUC', label: 'BUC' },
+                    { value: 'GPR', label: 'GPR' },
+                    { value: 'TC', label: 'TC' }
+                ]}
             />
+
             <Checkbox.Group
                 defaultValue={labels.map(e => e.label)}
                 options={labels?.map(element => {
-                    return { label: `${element.label} - ${element.desc}`, value: element.label }
+                    return { label: `${element.label} - ${element.label_name}`, value: element.label }
                 })}
-                onChange={handleFilterChanaged} />
+                onChange={(e) => {
+                    setSelectedLabels(e)
+                    console.log(e)
+                }}
+            />
             <Table dataSource={requirements} columns={columns} pagination={{ pageSize: 5 }} />
-            {chartData.length === 1 ?
+            {/* {chartData.length === 1 ?
                 <div></div>
                 :
                 <>
@@ -137,7 +157,7 @@ const Tracer = ({ labels, source }) => {
                     />
                 </>
 
-            }
+            } */}
         </Space>}
     </>;
 };

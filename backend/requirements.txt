@@ -1,7 +1,7 @@
 #API
 flask
 flask_restful
-flask_cors
+#flask_cors
 
 ## for data
 #json
@@ -32,4 +32,4 @@ treelib
 xlrd
 openpyxl
 
-dotenv
+python-dotenv
