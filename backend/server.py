@@ -16,7 +16,7 @@ logging.basicConfig(level=loggingLevel)
 app = Flask(__name__)
 CORS(
     app,
-    origins="http://localhost:3000",
+    origins="*",
     supports_credentials=True,
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 )
@@ -29,4 +29,4 @@ api.add_resource(Requirements, "/requirements")
 api.add_resource(Artifacts, "/artifacts")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

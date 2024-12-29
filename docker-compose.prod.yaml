@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  frontend:
+    build:
+      args:
+        - REACT_APP_SERVER_URL=https://micrabackend.diptsrv003.bth.se
